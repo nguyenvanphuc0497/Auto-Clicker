@@ -22,6 +22,10 @@ android {
 
     applicationVariants.all { variant ->
         switch (variant.getName()) {
+            case "product":
+                variant.resValue("string", "app_name", "${APP_NAME}")
+                variant.resValue("string", "file_provider", "${variant.applicationId}.fileprovider")
+                break
             case "release":
                 variant.resValue("string", "app_name", "${APP_NAME}")
                 variant.resValue("string", "file_provider", "${variant.applicationId}.fileprovider")
@@ -41,6 +45,12 @@ android {
             debuggable true
             minifyEnabled false
             applicationIdSuffix ".debug"
+
+            signingConfig signingConfigs.debug
+        }
+        product {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             signingConfig signingConfigs.debug
         }

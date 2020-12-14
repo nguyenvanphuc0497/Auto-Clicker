@@ -69,14 +69,14 @@ data class FourPosition(
             )
 
         fun init3Four(context: Context): List<FourPosition> = listOf(
-            inflaterViewForFour(context, 1, R.drawable.ic_plus_blue_900_24dp, 0),
+            inflaterViewForFour(context, 1, R.drawable.baseline_control_point_blue_900_36dp, 0),
             inflaterViewForFour(
                 context,
                 2,
-                R.drawable.ic_plus_green_900_24dp,
+                R.drawable.baseline_control_point_green_900_36dp,
                 200
             ),
-            inflaterViewForFour(context, 3, R.drawable.ic_plus_red_900_24dp, 400),
+            inflaterViewForFour(context, 3, R.drawable.baseline_control_point_red_900_36dp, 400),
         )
     }
 }
