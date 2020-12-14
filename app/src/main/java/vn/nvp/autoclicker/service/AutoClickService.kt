@@ -100,6 +100,23 @@ class AutoClickService : AccessibilityService() {
         dispatchGesture(gestureDescription, null, null).toString().logd()
     }
 
+    fun clickDuplicateMulti(xSrc: Int, ySrc: Int, xTarget: Int, yTarget: Int) {
+        "source: $xSrc $ySrc, target: $xTarget $yTarget".logd()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
+        val pathSrc = Path().apply {
+            moveTo(xSrc.toFloat(), ySrc.toFloat())
+        }
+        val pathTarget = Path().apply {
+            moveTo(xTarget.toFloat(), yTarget.toFloat())
+        }
+        val builder = GestureDescription.Builder()
+        val gestureDescription = builder
+            .addStroke(GestureDescription.StrokeDescription(pathTarget, 5, 2))
+            .addStroke(GestureDescription.StrokeDescription(pathSrc, 0, 2))
+            .build()
+        dispatchGesture(gestureDescription, null, null).toString().logd()
+    }
+
     fun run(newEvents: MutableList<Event>) {
         events.clear()
         events.addAll(newEvents)

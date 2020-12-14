@@ -4,8 +4,10 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.core.content.res.ResourcesCompat
 import vn.nvp.autoclicker.R
 
@@ -30,137 +32,53 @@ data class CouplePosition(
                 PixelFormat.TRANSLUCENT
             )
 
-        fun init3Couple(context: Context): List<CouplePosition> = listOf(
-            CouplePosition(
-                positionSrc = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
-                        if (this is TextView) {
-                            this.text = "1A"
-                            this.setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                ResourcesCompat.getDrawable(
-                                    resources,
-                                    R.drawable.ic_plus_blue_900_24dp,
-                                    null
-                                ),
-                                null,
-                                null
-                            )
-                        }
-                    },
-                    initParamsOfView().apply {
-                        x = 0
-                    }
-                ),
-                positionTarget = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
-                        if (this is TextView) {
-                            this.text = "1B"
-                            this.setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                ResourcesCompat.getDrawable(
-                                    resources,
-                                    R.drawable.ic_plus_blue_900_24dp,
-                                    null
-                                ),
-                                null,
-                                null
-                            )
-                        }
-                    },
-                    initParamsOfView().apply {
-                        x = 200
-                    }
+        private fun inflaterView(
+            context: Context,
+            text: String,
+            @DrawableRes icDrawableId: Int
+        ): View = LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
+            if (this is TextView) {
+                this.text = text
+                this.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        icDrawableId,
+                        null
+                    ),
+                    null,
+                    null
                 )
-            ),
+            }
+        }
+
+        private fun inflaterViewForCouple(
+            context: Context,
+            number: Int,
+            @DrawableRes icDrawableId: Int,
+            yStart: Int,
+        ): CouplePosition =
             CouplePosition(
                 positionSrc = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
-                        if (this is TextView) {
-                            this.text = "2A"
-                            this.setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                ResourcesCompat.getDrawable(
-                                    resources,
-                                    R.drawable.ic_plus_green_900_24dp,
-                                    null
-                                ),
-                                null,
-                                null
-                            )
-                        }
-                    },
+                    inflaterView(context, "${number}A", icDrawableId),
                     initParamsOfView().apply {
                         x = 0
-                        y = 200
+                        y = yStart
                     }
                 ),
                 positionTarget = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
-                        if (this is TextView) {
-                            this.text = "2B"
-                            this.setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                ResourcesCompat.getDrawable(
-                                    resources,
-                                    R.drawable.ic_plus_green_900_24dp,
-                                    null
-                                ),
-                                null,
-                                null
-                            )
-                        }
-                    },
+                    inflaterView(context, "${number}B", icDrawableId),
                     initParamsOfView().apply {
                         x = 200
-                        y = 200
-                    }
-                )
-            ),
-            CouplePosition(
-                positionSrc = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
-                        if (this is TextView) {
-                            this.text = "3A"
-                            this.setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                ResourcesCompat.getDrawable(
-                                    resources,
-                                    R.drawable.ic_plus_red_900_24dp,
-                                    null
-                                ),
-                                null,
-                                null
-                            )
-                        }
-                    },
-                    initParamsOfView().apply {
-                        x = 0
-                        y = 400
-                    }
-                ),
-                positionTarget = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
-                        if (this is TextView) {
-                            this.text = "3B"
-                            this.setCompoundDrawablesWithIntrinsicBounds(
-                                null,
-                                ResourcesCompat.getDrawable(
-                                    resources,
-                                    R.drawable.ic_plus_red_900_24dp,
-                                    null
-                                ),
-                                null,
-                                null
-                            )
-                        }
-                    },
-                    initParamsOfView().apply {
-                        x = 200
-                        y = 400
+                        y = yStart
                     }
                 )
             )
+
+        fun init3Couple(context: Context): List<CouplePosition> = listOf(
+            inflaterViewForCouple(context, 1, R.drawable.ic_plus_blue_900_24dp, 0),
+            inflaterViewForCouple(context, 2, R.drawable.ic_plus_green_900_24dp, 200),
+            inflaterViewForCouple(context, 3, R.drawable.ic_plus_red_900_24dp, 400),
         )
     }
 }

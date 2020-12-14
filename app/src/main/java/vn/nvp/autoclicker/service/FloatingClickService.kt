@@ -6,28 +6,21 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
-import android.view.View
 import android.view.WindowManager
 import vn.nvp.autoclicker.TouchAndDragListener
 import vn.nvp.autoclicker.dp2px
 import vn.nvp.autoclicker.logd
 import vn.nvp.autoclicker.model.CouplePosition
 import vn.nvp.autoclicker.model.MyPosition
-import java.util.*
 
 /**
  * Create by Nguyen Van Phuc on 12/9/20
  */
 class FloatingClickService : Service() {
     private lateinit var manager: WindowManager
-    private lateinit var view: View
-    private lateinit var viewListener: View
     private lateinit var params: WindowManager.LayoutParams
     private var srcStartDragDistance: Int = 0
     private var targetStartDragDistance: Int = 0
-    private var timer: Timer? = null
-    private var position1: MyPosition? = null
-    private var position1Listener: MyPosition? = null
     private val listPosition by lazy {
         CouplePosition.init3Couple(this)
     }
@@ -84,18 +77,6 @@ class FloatingClickService : Service() {
         "FloatingClickService onDestroy".logd()
         removeViewClicker()
     }
-
-//    override fun onConfigurationChanged(newConfig: Configuration?) {
-//        super.onConfigurationChanged(newConfig)
-//        "FloatingClickService onConfigurationChanged".logd()
-//        val x = params.x
-//        val y = params.y
-//        params.x = xForRecord
-//        params.y = yForRecord
-//        xForRecord = x
-//        yForRecord = y
-//        manager.updateViewLayout(view, params)
-//    }
 
     private fun addViewPositionClicker() {
         listPosition.forEach {
