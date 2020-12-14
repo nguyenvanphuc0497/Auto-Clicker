@@ -1,12 +1,13 @@
 package vn.nvp.autoclicker.service
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityServiceInfo
 import android.accessibilityservice.GestureDescription
 import android.content.Intent
 import android.graphics.Path
 import android.os.Build
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import vn.nvp.autoclicker.MainActivity
 import vn.nvp.autoclicker.bean.Event
 import vn.nvp.autoclicker.logd
 
@@ -26,7 +27,21 @@ class AutoClickService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         event.eventType.logd("onAccessibilityEvent")
-//        if (AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED == event.eventType) {
+        if (AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED == event.eventType) {
+            if (event.source != null) {
+                Log.e("xxxSource", event.source?.toString() ?: "")
+            }
+            Log.e("xxx", rootInActiveWindow.childCount.toString())
+            Log.e("xxx", rootInActiveWindow.getChild(0).getChild(0).toString())
+            Log.e(
+                "xxx",
+                rootInActiveWindow.getChild(0).findAccessibilityNodeInfosByViewId("start")
+                    .toString()
+            )
+            Log.e(
+                "xxx",
+                rootInActiveWindow.getChild(0).findAccessibilityNodeInfosByText("1A").toString()
+            )
 //            val nodeInfo = event.source
 //            nodeInfo.logd("nodeInfo")
 //            if (nodeInfo == null) {
@@ -42,7 +57,7 @@ class AutoClickService : AccessibilityService() {
 //            for (node in list) {
 //                node.performAction(AccessibilityNodeInfo.ACTION_CLICK)
 //            }
-//        }
+        }
     }
 
     override fun onServiceConnected() {
@@ -50,19 +65,10 @@ class AutoClickService : AccessibilityService() {
         "onServiceConnected".logd()
         autoClickService = this
 
-        val info = AccessibilityServiceInfo()
-        info.flags =
-            AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS
-
-        info.eventTypes = AccessibilityEvent.TYPES_ALL_MASK
-        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
-        info.packageNames = arrayOf("vn.nvp.autoclicker")
-        serviceInfo = info
-
-//        startActivity(
-//            Intent(this, MainActivity::class.java)
-//                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        )
+        startActivity(
+            Intent(this, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
     }
 
     fun click(x: Int, y: Int) {

@@ -1,18 +1,18 @@
 package vn.nvp.autoclicker
 
-import android.accessibilityservice.AccessibilityServiceInfo
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.view.accessibility.AccessibilityManager
+import android.provider.Settings.SettingNotFoundException
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import vn.nvp.autoclicker.service.FloatingClickService
 import vn.nvp.autoclicker.service.autoClickService
+
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -26,9 +26,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         start?.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
-                    || Settings.canDrawOverlays(this)) {
-                serviceIntent = Intent(this@MainActivity,
-                        FloatingClickService::class.java)
+                || Settings.canDrawOverlays(this)
+            ) {
+                serviceIntent = Intent(
+                    this@MainActivity,
+                    FloatingClickService::class.java
+                )
                 startService(serviceIntent)
                 onBackPressed()
             } else {
@@ -39,13 +42,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkAccess(): Boolean {
-        val string = getString(R.string.accessibility_service_id)
-        val manager = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
-        val list = manager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC)
-        for (id in list) {
-            if (string == id.id) {
-                return true
+        val logTag = "checkAccess"
+        val accessName = getString(R.string.accessibility_service_id)
+        var accessibilityEnabled = 0
+
+        try {
+            accessibilityEnabled =
+                Settings.Secure.getInt(this.contentResolver, Settings.Secure.ACCESSIBILITY_ENABLED)
+            Log.d(logTag, "ACCESSIBILITY: $accessibilityEnabled")
+        } catch (e: SettingNotFoundException) {
+            Log.d(logTag, "Error finding setting, default accessibility to not found: " + e.message)
+        }
+
+        if (accessibilityEnabled == 1) {
+            Log.d(logTag, "***ACCESSIBILIY IS ENABLED***: ")
+            val settingValue = Settings.Secure.getString(
+                contentResolver,
+                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
+            )
+            Log.d(logTag, "Setting: $settingValue")
+            if (settingValue != null) {
+                if (settingValue.contains(accessName, true)) {
+                    Log.d(logTag, "We've found the correct setting - accessibility is switched on!")
+                    return true
+                }
             }
+            Log.d(logTag, "***END***")
+        } else {
+            Log.d(logTag, "***ACCESSIBILIY IS DISABLED***")
         }
         return false
     }
@@ -57,16 +81,17 @@ class MainActivity : AppCompatActivity() {
         if (!hasPermission) {
             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !Settings.canDrawOverlays(this)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             askPermission()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun askPermission() {
-        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:$packageName"))
+        val intent = Intent(
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            Uri.parse("package:$packageName")
+        )
         startActivityForResult(intent, PERMISSION_CODE)
     }
 

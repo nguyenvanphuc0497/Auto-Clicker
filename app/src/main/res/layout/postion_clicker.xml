@@ -4,10 +4,11 @@
     android:id="@+id/start"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:drawableTop="@drawable/ic_point_red_500_18dp"
     android:paddingLeft="16dp"
     android:paddingTop="8dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
-    android:text="1A"
-    tools:ignore="RtlCompat" />
+    android:textAlignment="center"
+    tools:drawableTop="@drawable/ic_plus_blue_900_24dp"
+    tools:ignore="RtlCompat"
+    tools:text="1A" />

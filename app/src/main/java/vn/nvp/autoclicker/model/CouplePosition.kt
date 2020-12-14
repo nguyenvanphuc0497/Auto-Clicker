@@ -6,6 +6,7 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import vn.nvp.autoclicker.R
 
 /**
@@ -32,9 +33,19 @@ data class CouplePosition(
         fun init3Couple(context: Context): List<CouplePosition> = listOf(
             CouplePosition(
                 positionSrc = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_src, null).apply {
+                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
                         if (this is TextView) {
                             this.text = "1A"
+                            this.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                ResourcesCompat.getDrawable(
+                                    resources,
+                                    R.drawable.ic_plus_blue_900_24dp,
+                                    null
+                                ),
+                                null,
+                                null
+                            )
                         }
                     },
                     initParamsOfView().apply {
@@ -42,9 +53,19 @@ data class CouplePosition(
                     }
                 ),
                 positionTarget = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_src, null).apply {
+                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
                         if (this is TextView) {
                             this.text = "1B"
+                            this.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                ResourcesCompat.getDrawable(
+                                    resources,
+                                    R.drawable.ic_plus_blue_900_24dp,
+                                    null
+                                ),
+                                null,
+                                null
+                            )
                         }
                     },
                     initParamsOfView().apply {
@@ -54,9 +75,19 @@ data class CouplePosition(
             ),
             CouplePosition(
                 positionSrc = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_src, null).apply {
+                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
                         if (this is TextView) {
                             this.text = "2A"
+                            this.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                ResourcesCompat.getDrawable(
+                                    resources,
+                                    R.drawable.ic_plus_green_900_24dp,
+                                    null
+                                ),
+                                null,
+                                null
+                            )
                         }
                     },
                     initParamsOfView().apply {
@@ -65,9 +96,19 @@ data class CouplePosition(
                     }
                 ),
                 positionTarget = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_src, null).apply {
+                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
                         if (this is TextView) {
                             this.text = "2B"
+                            this.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                ResourcesCompat.getDrawable(
+                                    resources,
+                                    R.drawable.ic_plus_green_900_24dp,
+                                    null
+                                ),
+                                null,
+                                null
+                            )
                         }
                     },
                     initParamsOfView().apply {
@@ -78,9 +119,19 @@ data class CouplePosition(
             ),
             CouplePosition(
                 positionSrc = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_src, null).apply {
+                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
                         if (this is TextView) {
                             this.text = "3A"
+                            this.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                ResourcesCompat.getDrawable(
+                                    resources,
+                                    R.drawable.ic_plus_red_900_24dp,
+                                    null
+                                ),
+                                null,
+                                null
+                            )
                         }
                     },
                     initParamsOfView().apply {
@@ -89,9 +140,19 @@ data class CouplePosition(
                     }
                 ),
                 positionTarget = MyPosition(
-                    LayoutInflater.from(context).inflate(R.layout.postion_src, null).apply {
+                    LayoutInflater.from(context).inflate(R.layout.postion_clicker, null).apply {
                         if (this is TextView) {
                             this.text = "3B"
+                            this.setCompoundDrawablesWithIntrinsicBounds(
+                                null,
+                                ResourcesCompat.getDrawable(
+                                    resources,
+                                    R.drawable.ic_plus_red_900_24dp,
+                                    null
+                                ),
+                                null,
+                                null
+                            )
                         }
                     },
                     initParamsOfView().apply {
