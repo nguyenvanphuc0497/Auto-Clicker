@@ -52,7 +52,6 @@ class TouchAndDragListener(
             }
 
             MotionEvent.ACTION_UP -> {
-                "actionup".logd("x")
                 if (!isDrag) {
                     onTouch?.invoke()
                     return true

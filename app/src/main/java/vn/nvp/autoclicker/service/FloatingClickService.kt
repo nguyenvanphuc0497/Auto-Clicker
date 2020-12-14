@@ -6,10 +6,8 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
-import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import vn.nvp.autoclicker.R
 import vn.nvp.autoclicker.TouchAndDragListener
 import vn.nvp.autoclicker.dp2px
 import vn.nvp.autoclicker.logd
