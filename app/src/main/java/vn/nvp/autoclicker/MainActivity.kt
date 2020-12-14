@@ -17,6 +17,7 @@ import vn.nvp.autoclicker.service.autoClickService
 class MainActivity : AppCompatActivity() {
     companion object {
         const val PERMISSION_CODE = 141
+        const val TAG = "MainActivity"
     }
 
     private var serviceIntent: Intent? = null
@@ -24,19 +25,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        serviceIntent = Intent(
+            this@MainActivity,
+            FloatingClickService::class.java
+        )
+        initEvents()
+    }
+
+    private fun initEvents() {
         start?.setOnClickListener {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
                 || Settings.canDrawOverlays(this)
             ) {
-                serviceIntent = Intent(
-                    this@MainActivity,
-                    FloatingClickService::class.java
-                )
                 startService(serviceIntent)
                 onBackPressed()
             } else {
                 askPermission()
                 shortToast("You need System Alert Window Permission to do this")
+            }
+        }
+        btnStopApp?.setOnClickListener {
+            try {
+                stopService(serviceIntent)
+            } catch (e: Exception) {
+                Log.d(TAG, e.message ?: "")
             }
         }
     }
