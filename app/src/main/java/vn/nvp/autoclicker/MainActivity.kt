@@ -25,10 +25,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        serviceIntent = Intent(
-            this@MainActivity,
-            FloatingClickService::class.java
-        )
         initEvents()
     }
 
@@ -37,6 +33,13 @@ class MainActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
                 || Settings.canDrawOverlays(this)
             ) {
+                handleStopService()
+                serviceIntent = Intent(
+                    this@MainActivity,
+                    FloatingClickService::class.java
+                ).apply {
+                    putExtra("key_mode_type", 1)
+                }
                 startService(serviceIntent)
                 onBackPressed()
             } else {
@@ -44,11 +47,25 @@ class MainActivity : AppCompatActivity() {
                 shortToast("You need System Alert Window Permission to do this")
             }
         }
-        btnStopApp?.setOnClickListener {
-            try {
-                stopService(serviceIntent)
-            } catch (e: Exception) {
-                Log.d(TAG, e.message ?: "")
+        btnStopSingleClick?.setOnClickListener {
+            handleStopService()
+        }
+        btnStartMultiClick?.setOnClickListener {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
+                || Settings.canDrawOverlays(this)
+            ) {
+                handleStopService()
+                serviceIntent = Intent(
+                    this@MainActivity,
+                    FloatingClickService::class.java
+                ).apply {
+                    putExtra("key_mode_type", 2)
+                }
+                startService(serviceIntent)
+                onBackPressed()
+            } else {
+                askPermission()
+                shortToast("You need System Alert Window Permission to do this")
             }
         }
     }
@@ -123,5 +140,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         moveTaskToBack(true)
+    }
+
+    private fun handleStopService() {
+        try {
+            if (serviceIntent != null) {
+                stopService(serviceIntent)
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, e.message ?: "")
+        }
     }
 }

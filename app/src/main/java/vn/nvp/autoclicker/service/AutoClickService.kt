@@ -10,6 +10,7 @@ import android.view.accessibility.AccessibilityEvent
 import vn.nvp.autoclicker.MainActivity
 import vn.nvp.autoclicker.bean.Event
 import vn.nvp.autoclicker.logd
+import vn.nvp.autoclicker.model.MyLocation
 
 
 /**
@@ -100,20 +101,25 @@ class AutoClickService : AccessibilityService() {
         dispatchGesture(gestureDescription, null, null).toString().logd()
     }
 
-    fun clickDuplicateMulti(xSrc: Int, ySrc: Int, xTarget: Int, yTarget: Int) {
-        "source: $xSrc $ySrc, target: $xTarget $yTarget".logd()
+    fun clickDuplicateMulti(listMyLocation: List<MyLocation>) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) return
-        val pathSrc = Path().apply {
-            moveTo(xSrc.toFloat(), ySrc.toFloat())
-        }
-        val pathTarget = Path().apply {
-            moveTo(xTarget.toFloat(), yTarget.toFloat())
-        }
         val builder = GestureDescription.Builder()
-        val gestureDescription = builder
-            .addStroke(GestureDescription.StrokeDescription(pathTarget, 5, 2))
-            .addStroke(GestureDescription.StrokeDescription(pathSrc, 0, 2))
-            .build()
+        val gestureDescription = builder.apply {
+            listMyLocation.forEachIndexed { index, myLocation ->
+                this.addStroke(
+                    GestureDescription.StrokeDescription(
+                        Path().apply {
+                            moveTo(
+                                myLocation.locationX?.toFloat() ?: 0F,
+                                myLocation.locationY?.toFloat() ?: 0F
+                            )
+                        },
+                        4 - index.toLong(),
+                        1
+                    )
+                )
+            }
+        }.build()
         dispatchGesture(gestureDescription, null, null).toString().logd()
     }
 
