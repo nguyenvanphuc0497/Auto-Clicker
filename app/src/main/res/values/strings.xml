@@ -1,5 +1,5 @@
 <resources>
-    <string name="accessibility_service_description">TODO</string>
+    <string name="accessibility_service_description">This app needs the following permissions:\n\n- Perform gestures: to perform automatic clicks.\n- Task tracker: This is a request for any accessibility (accessibility) services.\n\nWe are committed to not collecting user data.</string>
     <string name="accessibility_service_label">AutoClickService</string>
     <string name="accessibility_service_id">vn.nvp.autoclicker.service.AutoClickService</string>
 </resources>
